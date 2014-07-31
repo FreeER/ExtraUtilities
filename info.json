@@ -1,0 +1,9 @@
+{
+	"name":"ExtraUtilities",
+	"author":"FreeER",
+	"version":"0.0.1",
+	"title":"Extra Utilities",
+	"description":"Collection of useful functions",
+    "dependencies": ["base"]
+}
+
