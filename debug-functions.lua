@@ -84,7 +84,7 @@ end
 --  mixed is purely for optimization, if it's not mixed removefromTable determines which type
 --  it is based on if fromTable[1] exists instead of performing a type check on each index in removeTable
 --]]
-function removefromTable(fromTable, removeTable, mixed)
+function removeFromTable(fromTable, removeTable, mixed)
   if not removeTable or not (type(removeTable) == "table" or type(removeTable) == "number" or type(removeTable) == "string") then
     error("improper entries to remove!", 2)
   end

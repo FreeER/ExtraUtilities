@@ -45,20 +45,20 @@ game.onevent(defines.events.ontick, function(event)
         found = game.findentitiesfiltered{name=ghost.name, area=eu.getBoundingBox(ghost.position, 1)}
       end
       
-      local nonbuilt = {}
+      local exclude = {}
       for i, entity in ipairs(found) do
-        if entity.type == "smoke" or entity.type == "decorative" or entity.type == "construction-robot" or entity.type == "logistic-robot" then
-          table.insert(nonbuilt, i)
+        if entity.type == "smoke" or entity.type == "decorative" or entity.type == "construction-robot" or entity.type == "logistic-robot" or entity.type == "ghost" then
+          table.insert(exclude, i)
         end
       end
-      removefromTable(found, nonbuilt)
+      eu.removeFromTable(found, exclude)
       if found[1] then
         raiseOnBuiltEntity(found[1])
       end
       table.insert(removeGhosts, i)
     end
   end
-  removefromTable(glob.ghosts, removeGhosts) -- still need 'valid' ghosts so can't reset entire table
+  eu.removeFromTable(glob.ghosts, removeGhosts) -- still need 'valid' ghosts so can't reset entire table
 end)
 
 function search(name, position)
@@ -73,39 +73,4 @@ function raiseOnBuiltEntity(entity)
     createdentity=eu.fakeEntity(entity), -- can't pass 'rich' data, same as interfaces
     mod="ExtraUtilities"
   })
-end
-
-function removefromTable(fromTable, removeTable, mixed)
-  if not removeTable or not (type(removeTable) == "table" or type(removeTable) == "number" or type(removeTable) == "string") then
-    error("improper entries to remove!", 2)
-  end
-  if type(fromTable) ~= "table" then error("No table given!") end
-  if type(removeTable) ~= "table" then
-    if type(removeTable) == "string" then
-      fromTable[removeTable] = nil
-    elseif type(removeTable) == "number" then
-      table.remove(fromTable, removeTable)
-    end
-  end
-  if mixed then
-    for i, index in ipairs(removeTable) do
-      -- subtract i because the positions will be adjusted 'down' when an entry is removed (+1 since i starts at 1)
-      if type(index) == "number" then -- array index
-        table.remove(fromTable, index-i+1)
-      else -- hash index
-        fromTable[index]=nil
-      end
-    end
-  else
-    if type(removeTable[1]) == "number" then -- array type table
-      for i, index in ipairs(removeTable) do
-        table.remove(fromTable, index-i+1)
-      end
-    else -- hash table
-      for _, index in ipairs(removeTable) do
-        fromTable[index]=nil
-      end
-    end
-  end
-  return fromTable
 end
