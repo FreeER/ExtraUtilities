@@ -174,7 +174,7 @@ function maxInsertable(itemstack, entity, inventory, resultIsAll)
   elseif not entity or not entity.valid or not entity.position then 
     error("Invalid lua entity!", 2) 
   elseif inventory and (inventory > 10 or inventory < 1) then
-    error("There is no way that's a valid inventory!")
+    error("There is no way that's a valid inventory!", 2)
   end 
   inventory = inventory or defines.inventory.chest 
   
